@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 class MoedasDetalhesPage extends StatefulWidget {
   final Moeda moeda;
+
   const MoedasDetalhesPage({Key? key, required this.moeda}) : super(key: key);
 
   @override
@@ -22,7 +23,7 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
     if (_form.currentState!.validate()) {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Compra realizada com sucesso!')));
+          const SnackBar(content: Text('Compra realizada com sucesso!')));
     }
   }
 
@@ -65,13 +66,13 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
                     child: Container(
                       child: Text(
                         '$quantidade ${widget.moeda.sigla}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
                           color: Colors.teal,
                         ),
                       ),
-                      margin: EdgeInsets.only(bottom: 24),
-                      padding: EdgeInsets.all(12),
+                      margin: const EdgeInsets.only(bottom: 24),
+                      padding: const EdgeInsets.all(12),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.teal.withOpacity(0.05),
@@ -79,14 +80,14 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
                     ),
                   )
                 : Container(
-                    margin: EdgeInsets.only(bottom: 71),
+                    margin: const EdgeInsets.only(bottom: 71),
                   ),
             Form(
               key: _form,
               child: TextFormField(
                 controller: _valor,
-                style: TextStyle(fontSize: 22),
-                decoration: InputDecoration(
+                style: const TextStyle(fontSize: 22),
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Valor',
                   prefixIcon: Icon(Icons.monetization_on_outlined),
@@ -116,12 +117,12 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
             ),
             Container(
               alignment: Alignment.bottomCenter,
-              margin: EdgeInsets.only(top: 24),
+              margin: const EdgeInsets.only(top: 24),
               child: ElevatedButton(
                 onPressed: comprar,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Icon(Icons.check),
                     Padding(
                       padding: EdgeInsets.all(16),

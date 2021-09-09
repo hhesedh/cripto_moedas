@@ -31,11 +31,11 @@ class _MoedasPageState extends State<MoedasPage> {
     final name = loc['locale'] == 'pt_BR' ? '\$' : 'R\$';
 
     return PopupMenuButton(
-      icon: Icon(Icons.language),
+      icon: const Icon(Icons.language),
       itemBuilder: (context) => [
         PopupMenuItem(
           child: ListTile(
-            leading: Icon(Icons.swap_vert),
+            leading: const Icon(Icons.swap_vert),
             title: Text('User $locale'),
             onTap: () {
               context.read<AppSettings>().setLocale(locale, name);
@@ -50,7 +50,7 @@ class _MoedasPageState extends State<MoedasPage> {
   appBarDinamica() {
     if (selecionadas.isEmpty) {
       return AppBar(
-        title: Text('Cripto Moedas'),
+        title: const Text('Cripto Moedas'),
         actions: [
           changeLanguageButton(),
         ],
@@ -59,7 +59,7 @@ class _MoedasPageState extends State<MoedasPage> {
 
     return AppBar(
       leading: IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back),
         onPressed: () {
           setState(() {
             selecionadas.clear();
@@ -69,13 +69,11 @@ class _MoedasPageState extends State<MoedasPage> {
       title: Text('${selecionadas.length} selecionadas'),
       backgroundColor: Colors.blueGrey[50],
       elevation: 1,
-      iconTheme: IconThemeData(color: Colors.black87),
-      textTheme: TextTheme(
-        headline6: TextStyle(
-          color: Colors.black87,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
+      iconTheme: const IconThemeData(color: Colors.black87),
+      toolbarTextStyle: const TextStyle(
+        color: Colors.black87,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
       ),
     );
   }
@@ -106,11 +104,11 @@ class _MoedasPageState extends State<MoedasPage> {
         child: ListView.separated(
             itemBuilder: (BuildContext context, int moeda) {
               return ListTile(
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
                 leading: selecionadas.contains(tabela[moeda])
-                    ? CircleAvatar(
+                    ? const CircleAvatar(
                         child: Icon(Icons.check),
                       )
                     : SizedBox(
@@ -121,14 +119,14 @@ class _MoedasPageState extends State<MoedasPage> {
                   children: [
                     Text(
                       tabela[moeda].nome,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     if (favoritas.lista
                         .any((fav) => fav.sigla == tabela[moeda].sigla))
-                      Icon(Icons.circle, color: Colors.amber, size: 8),
+                      const Icon(Icons.circle, color: Colors.amber, size: 8),
                   ],
                 ),
                 trailing: Text(
@@ -146,8 +144,8 @@ class _MoedasPageState extends State<MoedasPage> {
                 onTap: () => mostrarDetalhes(tabela[moeda]),
               );
             },
-            padding: EdgeInsets.all(16),
-            separatorBuilder: (_, __) => Divider(),
+            padding: const EdgeInsets.all(16),
+            separatorBuilder: (_, __) => const Divider(),
             itemCount: tabela.length),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -157,8 +155,8 @@ class _MoedasPageState extends State<MoedasPage> {
                 favoritas.saveAll(selecionadas);
                 limparSelecionadas();
               },
-              icon: Icon(Icons.star),
-              label: Text(
+              icon: const Icon(Icons.star),
+              label: const Text(
                 'FAVORITAR',
                 style: TextStyle(
                   letterSpacing: 0,

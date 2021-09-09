@@ -23,23 +23,23 @@ class FavoritasRepository extends ChangeNotifier {
     box = await Hive.openLazyBox<Moeda>('moedas_favoritas');
   }
 
-  _readFavoritas() {
-    box.keys.forEach((moeda) async {
+  _readFavoritas() async {
+    for (var moeda in box.keys) {
       Moeda m = await box.get(moeda);
       _lista.add(m);
       notifyListeners();
-    });
+    }
   }
 
   UnmodifiableListView<Moeda> get lista => UnmodifiableListView(_lista);
 
-  saveAll(List<Moeda> moedas) {
-    moedas.forEach((moeda) {
+  saveAll(List<Moeda> moedas) async {
+    for (var moeda in moedas) {
       if (!_lista.any((atual) => atual.sigla == moeda.sigla)) {
         _lista.add(moeda);
         box.put(moeda.sigla, moeda);
       }
-    });
+    }
     notifyListeners();
   }
 
