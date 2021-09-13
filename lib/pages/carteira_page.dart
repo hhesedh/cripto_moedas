@@ -107,7 +107,7 @@ class _CarteiraPageState extends State<CarteiraPage> {
       return PieChartSectionData(
         color: color,
         value: porcentagem,
-        title: porcentagem.toStringAsFixed(0),
+        title: '${porcentagem.toStringAsFixed(0)}%',
         radius: radius,
         titleStyle: TextStyle(
           fontSize: fontSize,
