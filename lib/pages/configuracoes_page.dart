@@ -46,7 +46,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
     );
   }
 
-  updateSaldo() async {
+  void updateSaldo() async {
     final form = GlobalKey<FormState>();
     final valor = TextEditingController();
     final conta = context.read<ContaRepository>();
