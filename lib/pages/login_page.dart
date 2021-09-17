@@ -1,5 +1,6 @@
 import 'package:cripto_moedas/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/src/provider.dart';
 
@@ -100,6 +101,8 @@ class _LoginPageState extends State<LoginPage> {
                       if (value!.isEmpty) {
                         return 'Informe o email corretamente!';
                       }
+
+                      if (!isEmail(value)) return "Email incorreto";
                       return null;
                     },
                   ),
@@ -186,5 +189,14 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       isPasswordObscureText = !isPasswordObscureText;
     });
+  }
+
+  bool isEmail(String em) {
+    String p =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+    RegExp regExp = RegExp(p);
+
+    return regExp.hasMatch(em);
   }
 }
