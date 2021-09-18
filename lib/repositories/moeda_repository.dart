@@ -96,20 +96,7 @@ class MoedaRepository extends ChangeNotifier {
     List resultados = await db.query('moedas');
 
     _tabela = resultados.map((row) {
-      return Moeda(
-        baseId: row['baseId'],
-        icone: row['icone'],
-        sigla: row['sigla'],
-        nome: row['nome'],
-        preco: double.parse(row['preco']),
-        timestamp: DateTime.fromMillisecondsSinceEpoch(row['timestamp']),
-        mudancaHora: double.parse(row['mudancaHora']),
-        mudancaDia: double.parse(row['mudancaDia']),
-        mudancaSemana: double.parse(row['mudancaSemana']),
-        mudancaMes: double.parse(row['mudancaMes']),
-        mudancaAno: double.parse(row['mudancaAno']),
-        mudancaPeriodoTotal: double.parse(row['mudancaPeriodoTotal']),
-      );
+      return Moeda.fromJson(row);
     }).toList();
 
     notifyListeners();
