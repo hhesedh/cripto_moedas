@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/src/iterable_extensions.dart';
 import 'package:cripto_moedas/database/db_firestore.dart';
 import 'package:cripto_moedas/models/moeda.dart';
 import 'package:cripto_moedas/repositories/moeda_repository.dart';
@@ -19,33 +18,36 @@ class FavoritasRepository extends ChangeNotifier {
   }
 
   _startRepository() async {
-    _startFirestore();
+    await _startFirestore();
     await _readFavoritas();
   }
 
-  void _startFirestore() {
+  _startFirestore() {
     db = DBFirestore.get();
   }
 
-  Future<void> _readFavoritas() async {
+  _readFavoritas() async {
     if (auth.usuario != null && _lista.isEmpty) {
-      final snapshot =
-          await db.collection('usuarios/${auth.usuario!.uid}/favoritas').get();
+      try {
+        final snapshot = await db
+            .collection('usuarios/${auth.usuario!.uid}/favoritas')
+            .get();
 
-      snapshot.docs.forEach((doc) {
-        Moeda? moeda =
-            moedas.tabela.firstWhereOrNull((m) => m.sigla == doc.get('sigla'));
-        if (moeda != null) {
+        snapshot.docs.forEach((doc) {
+          Moeda moeda = moedas.tabela
+              .firstWhere((moeda) => moeda.sigla == doc.get('sigla'));
           _lista.add(moeda);
-        }
-        notifyListeners();
-      });
+          notifyListeners();
+        });
+      } catch (e) {
+        print('Sem id de usuário');
+      }
     }
   }
 
   UnmodifiableListView<Moeda> get lista => UnmodifiableListView(_lista);
 
-  Future<void> saveAll(List<Moeda> moedas) async {
+  saveAll(List<Moeda> moedas) {
     moedas.forEach((moeda) async {
       if (!_lista.any((atual) => atual.sigla == moeda.sigla)) {
         _lista.add(moeda);
@@ -59,17 +61,15 @@ class FavoritasRepository extends ChangeNotifier {
         });
       }
     });
-
     notifyListeners();
   }
 
-  Future<void> remove(Moeda moeda) async {
+  remove(Moeda moeda) async {
     await db
         .collection('usuarios/${auth.usuario!.uid}/favoritas')
         .doc(moeda.sigla)
         .delete();
     _lista.remove(moeda);
-
     notifyListeners();
   }
 }
