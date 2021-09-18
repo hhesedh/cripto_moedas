@@ -14,17 +14,21 @@ class MoedaRepository extends ChangeNotifier {
   List<Moeda> get tabela => _tabela;
 
   MoedaRepository() {
-    _setupMoedasTable();
-    _setupDadosTableMoeda();
-    _readMoedasTable();
+    _initRepository();
     // _refreshPrecos();
+  }
+
+  Future<void> _initRepository() async {
+    await _setupMoedasTable();
+    await _setupDadosTableMoeda();
+    await _readMoedasTable();
   }
 
   // _refreshPrecos() async {
   //   intervalo = Timer.periodic(Duration(minutes: 5), (_) => checkPrecos());
   // }
 
-  getHistoricoMoeda(Moeda moeda) async {
+  Future<List<Map<String, dynamic>>> getHistoricoMoeda(Moeda moeda) async {
     final response = await http.get(
       Uri.parse(
         'https://api.coinbase.com/v2/assets/prices/${moeda.baseId}?base=BRL',
@@ -47,7 +51,7 @@ class MoedaRepository extends ChangeNotifier {
     return precos;
   }
 
-  checkPrecos() async {
+  Future<void> checkPrecos() async {
     String uri = 'https://api.coinbase.com/v2/assets/prices?base=BRL';
     final response = await http.get(Uri.parse(uri));
 
@@ -87,7 +91,7 @@ class MoedaRepository extends ChangeNotifier {
     }
   }
 
-  _readMoedasTable() async {
+  Future<void> _readMoedasTable() async {
     Database db = await DB.instance.database;
     List resultados = await db.query('moedas');
 
@@ -111,13 +115,14 @@ class MoedaRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  _moedasTableIsEmpty() async {
+  Future<bool> _moedasTableIsEmpty() async {
     Database db = await DB.instance.database;
     List resultados = await db.query('moedas');
-    return resultados.isEmpty;
+    final isEmpty = resultados.isEmpty;
+    return isEmpty;
   }
 
-  _setupDadosTableMoeda() async {
+  Future<void> _setupDadosTableMoeda() async {
     if (await _moedasTableIsEmpty()) {
       const String uri = 'https://api.coinbase.com/v2/assets/search?base=BRL';
 
@@ -153,7 +158,7 @@ class MoedaRepository extends ChangeNotifier {
     }
   }
 
-  _setupMoedasTable() async {
+  Future<void> _setupMoedasTable() async {
     const String table = '''
       CREATE TABLE IF NOT EXISTS moedas (
         baseId TEXT PRIMARY KEY,
